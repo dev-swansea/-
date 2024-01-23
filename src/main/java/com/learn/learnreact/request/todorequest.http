@@ -1,0 +1,28 @@
+### 게시물 하나 조회
+GET http://localhost:8080/api/todo/123
+
+### 리스트 조회
+GET http://localhost:8080/api/todo/list?page=A&size=10
+
+### POST:TODODTO 테스트
+POST http://localhost:8080/api/todo
+Content-Type: application/json
+
+{
+  "title": "보내봅니다2.",
+  "writer": "이수완2",
+  "dueDate": "2024-01-25"
+}
+
+### MODIFY:TODODTO 테스트
+PUT http://localhost:8080/api/todo/103
+Content-Type: application/json
+
+{
+  "title": "103 변경합니다.",
+  "complete": true,
+  "dueDate": "2024-01-25"
+}
+
+### REMOVE:TNO 테스트
+DELETE http://localhost:8080/api/todo/103
