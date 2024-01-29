@@ -8,8 +8,8 @@ const ModifyPage = ({tno}) => {
     navigate({pathname: `/todo/read/${tno}`});
   };
 
-  const moveToList = () => {
-    navigate({pathname: `/todo/list `});
+  const moveToList = () => { // 이건 삭제 하고 난 뒤
+    navigate({pathname: `/todo/list`});
   };
 
   return <div className="text-3xl font-extrabold">ModifyPage</div>;
