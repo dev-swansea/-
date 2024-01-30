@@ -7,7 +7,6 @@ const Loading = <div>Loading...</div>
 const Main = lazy(() => import("../pages/MainPage"))
 const About = lazy(() => import("../pages/About"))
 const TodoIndex = lazy(() => import("../pages/todo/IndexPage"))
-const TodoList = lazy(() => import("../pages/todo/ListPage"))
 
 const root = createBrowserRouter([
 

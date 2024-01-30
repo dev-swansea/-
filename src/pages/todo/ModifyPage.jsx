@@ -1,18 +1,16 @@
-import {useCallback} from "react";
-import {useNavigate} from "react-router-dom";
+import {useParams} from "react-router-dom"
+import ModifyComponent from "../../components/todo/ModifyComponent"
 
-const ModifyPage = ({tno}) => {
-  const navigate = useNavigate();
+const ModifyPage = () => {
+  const {tno} = useParams()
 
-  const moveToRead = tno => {
-    navigate({pathname: `/todo/read/${tno}`});
-  };
+  return (
+    <div className="p-4 w-full bg-white">
+      <div className="text-3xl font-extrabold">ModifyPage</div>
 
-  const moveToList = () => { // 이건 삭제 하고 난 뒤
-    navigate({pathname: `/todo/list`});
-  };
+      <ModifyComponent tno={tno} />
+    </div>
+  )
+}
 
-  return <div className="text-3xl font-extrabold">ModifyPage</div>;
-};
-
-export default ModifyPage;
+export default ModifyPage

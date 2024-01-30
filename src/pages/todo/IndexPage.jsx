@@ -28,7 +28,6 @@ const IndexPage = () => {
         >
           ADD
         </div>
-        <div className="flex flex-wrap w-full"></div>
         <Outlet />
       </div>
     </BasicLayout>

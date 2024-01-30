@@ -15,3 +15,18 @@ export const getList = async (pageParam) => {
   const res = await axios.get(`${prefix}/list`, { params: { page, size } })
   return res.data
 }
+
+export const todoAdd = async (todoObj) => {
+  const res = await axios.post(`${prefix}/`, todoObj)
+  return res.data;
+}
+
+export const modifyOne = async (todo) => {
+  const res = await axios.put(`${prefix}/${todo.tno}`, todo)
+  return res.data
+}
+
+export const deleteOne = async (tno) => {
+  const res = await axios.delete(`${prefix}/${tno}`)
+  return res.data
+}
