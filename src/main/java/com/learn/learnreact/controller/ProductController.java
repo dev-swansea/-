@@ -4,6 +4,7 @@ import com.learn.learnreact.dto.ProductDTO;
 import com.learn.learnreact.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class ProductController {
   @PostMapping
   public Map<String, String> register(ProductDTO productDTO) {
     log.info("register => {}", productDTO);
-    List<MultipartFile> fileList = productDTO.getFiles();
+    List<FilePart> fileList = productDTO.getFiles();
     List<String> uploadFileNames = customFileUtil.saveFiles(fileList);
     productDTO.setUploadFileNames(uploadFileNames);
     log.info("upload file name => {}", uploadFileNames);

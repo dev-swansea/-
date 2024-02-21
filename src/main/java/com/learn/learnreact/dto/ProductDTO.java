@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.util.*;
 
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -25,7 +26,7 @@ public class ProductDTO {
   private boolean delFlag;
 
   @Builder.Default // null 체크를 쉽게 하기 위해?
-  private List<MultipartFile> files = new ArrayList<>();
+  private List<FilePart> files = new ArrayList<>();
   @Builder.Default
   private List<String> uploadFileNames = new ArrayList<>();
 

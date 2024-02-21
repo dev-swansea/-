@@ -5,11 +5,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,34 +45,37 @@ public class CustomFileUtil {
     log.info("upload path => {}", uploadPath);
   }
 
-  public List<String> saveFiles(List<MultipartFile> files) throws RuntimeException {
+  public List<String> saveFiles(List<FilePart> files) throws RuntimeException {
     if (files == null || files.size() == 0) {
       return List.of(); // 예외 처리를 안하고 그냥 빈 리스트를 반환하네?
     }
 
     List<String> uploadName = new ArrayList();
 
-    for (MultipartFile file : files) {
-      String saveName = UUID.randomUUID().toString().substring(0, 8) + "_" + file.getOriginalFilename();
+    for (FilePart file : files) {
+      String saveName = UUID.randomUUID().toString().substring(0, 8) + "_" + file.filename();
       Path savePath = Paths.get(uploadPath, saveName);
-      try {
-        Files.copy(file.getInputStream(), savePath);
 
-        // 파일의 형태 확인
-        String contentType = file.getContentType();
-        if (contentType != null && contentType.startsWith("image")) {
-          Path thumbnailPath = Paths.get(uploadPath, "s_" + saveName);
+      file.transferTo(savePath).block();
 
+      int idx = file.filename().lastIndexOf(".");
+      String fileExtension = file.filename().substring(idx + 1);
+
+      // 파일의 형태 확인
+      if (file.headers().getContentType() != null && file.headers().getContentType().toString().startsWith("image")) {
+        Path thumbnailPath = Paths.get(uploadPath, "s_" + saveName);
+
+        try {
           Thumbnails.of(savePath.toFile())
                   .size(250, 250)
                   .toFile(thumbnailPath.toFile());
-
+        } catch (IOException e) {
+          throw new RuntimeException(e);
         }
 
-        uploadName.add(saveName);
-      } catch (IOException e) {
-        throw new RuntimeException(e.getMessage());
       }
+
+      uploadName.add(saveName);
     }
     return uploadName;
   }
