@@ -19,7 +19,7 @@ public class TodoController {
   private final TodoService todoService;
 
   @GetMapping("/{tno}")
-  public TodoDTO get(@PathVariable(name = "tno") Long tno) {
+  public TodoDTO get(@PathVariable("tno") Long tno) {
     return todoService.get(tno);
   }
 
@@ -29,7 +29,7 @@ public class TodoController {
     return todoService.list(pageRequestDTO);
   }
 
-  @PostMapping("/register")
+  @PostMapping("/")
   public Map<String, Long> register(@RequestBody TodoDTO todoDTO) {
     log.info("TodoDTO => {}", todoDTO);
     Long tno = todoService.register(todoDTO);
