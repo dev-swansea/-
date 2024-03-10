@@ -46,6 +46,7 @@ const ModifyComponent = ({tno, moveList, moveRead}) => {
   }
 
   const closeModal = () => {
+    // 이게.. 모달을 닫고 난 후의 행위가 이루어지는데 함수이름이 이게 맞나
     if (result === "Delete") moveToList()
     else moveToRead(tno)
   }
