@@ -1,12 +1,2 @@
-POST http://localhost:8080/api/products
-Content-Type: multipart/form-data; boundary=----boundary
-
-------boundary
-Content-Disposition: form-data; name="pname"
-
-suwan
-------boundary
-Content-Disposition: form-data; name="pdesc"
-
-test
-------boundary--
+###
+GET http://localhost:8080/api/products/1112

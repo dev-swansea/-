@@ -10,8 +10,8 @@ import java.util.stream.IntStream;
 @Data
 public class PageResponseDTO<E> {
 
-  private List<E> dtoList; // 리스트에 출력될 게시물들
-  private List<Integer> pageNumList; // 이건 뭐야? ..
+  private List<E> dtoList;
+  private List<Integer> pageNumList;
   private PageRequestDTO pageRequestDTO;
   private boolean prev, next;
   private int totalCnt, prevPage, nextPage, totalPage, current;
