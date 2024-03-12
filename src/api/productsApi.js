@@ -11,6 +11,32 @@ export const postAdd = async (product) => {
   }
 
   // 경로 뒤 '/' 주의
-  const res = await axios.post(`${host}`, product, header)
-  return res
+  return await axios.post(`${host}`, product, header)
+}
+
+export const getList = async (pageParam) => {
+  const { page, size } = pageParam
+
+  const res = await axios.get(`${host}/list`, { params: { page, size } })
+  return res.data
+}
+
+export const getOne = async (pno) => {
+  const res = await axios.get(`${host}/${pno}`)
+  return res.data
+}
+
+export const putOne = async (pno, product) => {
+  const header = {
+    headers: {
+      "Content-Type": "multipart/for-data",
+    },
+  }
+  const res = await axios.put(`${host}/${pno}`, product, header)
+  return res.data
+}
+
+export const deleteOne = async (pno) => {
+  const res = await axios.delete(`${host}/${pno}`)
+  return res.data
 }

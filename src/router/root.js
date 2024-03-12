@@ -14,7 +14,7 @@ const ProductIndex = lazy(() => import("../pages/products/IndexPage"))
 const root = createBrowserRouter([
   {
     path: "",
-    element: ( <Suspense fallback={Loading}> <Main />{" "} </Suspense> ),
+    element: ( <Suspense fallback={Loading}> <Main /> </Suspense> ),
   },
   {
     path: "about",
@@ -27,7 +27,8 @@ const root = createBrowserRouter([
   },
   {
     path: "products",
-    element: ( <Suspense fallback={Loading}> <ProductIndex /> </Suspense> ), children: productRouter(),
+    element: ( <Suspense fallback={Loading}> <ProductIndex /> </Suspense> ), 
+    children: productRouter(),
   },
 ])
 

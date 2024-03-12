@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
-import {getOne} from "../../api/todoApi";
-import useCustomMove from "../../hooks/useCustomMove";
+import { useEffect, useState } from "react"
+import { getOne } from "../../api/todoApi"
+import useCustomMove from "../../hooks/useCustomMove"
 
 const initState = {
   tno: 0,
@@ -8,18 +8,17 @@ const initState = {
   writer: "",
   dueDate: null,
   complete: false,
-};
+}
 
-const ReadComponent = ({tno}) => {
-  const [todo, setTodo] = useState(initState); // 아직 사용하지 않음
-
-  const {moveToList, moveToModify} = useCustomMove();
+const ReadComponent = ({ tno }) => {
+  const [todo, setTodo] = useState(initState) // 아직 사용하지 않음
+  const { moveToList, moveToModify } = useCustomMove()
 
   useEffect(() => {
-    getOne(tno).then(data => {
-      setTodo(data);
-    });
-  }, [tno]);
+    getOne(tno).then((data) => {
+      setTodo(data)
+    })
+  }, [tno])
 
   return (
     <div className="border-2 border-sky-300 mt-10 m-2 p-4">
@@ -31,26 +30,32 @@ const ReadComponent = ({tno}) => {
 
       {/* buttons start */}
       <div className="flex justify-end p-4">
-        <button className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500" onClick={() => moveToList()}>
+        <button
+          className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
+          onClick={() => moveToList()}>
           List
         </button>
-        <button className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500" onClick={() => moveToModify(tno)}>
+        <button
+          className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
+          onClick={() => moveToModify(tno)}>
           Modify
         </button>
       </div>
 
       {/* buttons end */}
     </div>
-  );
-};
+  )
+}
 
 const makeDiv = (title, value) => (
   <div className="flex justify-center">
     <div className="relative mb-4 flex w-full flex-wrap items-stretch">
       <div className="w-1/5 p-6 text-right font-bold">{title}</div>
-      <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">{value}</div>
+      <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">
+        {value}
+      </div>
     </div>
   </div>
-);
+)
 
-export default ReadComponent;
+export default ReadComponent

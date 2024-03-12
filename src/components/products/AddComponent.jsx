@@ -2,6 +2,7 @@ import { useRef, useState } from "react"
 import { postAdd } from "../../api/productsApi"
 import FetchingModal from "../common/FetchingModal"
 import ResultModal from "../common/ResultModal"
+import useCustomMove from "../../hooks/useCustomMove"
 
 const initState = {
   pname: "",
@@ -17,6 +18,8 @@ const AddComponent = () => {
 
   const [fetching, setFeching] = useState(false)
   const [result, setResult] = useState(null)
+
+  const { moveToList } = useCustomMove()
 
   const handleChangeProduct = (e) => {
     product[e.target.name] = e.target.value
@@ -48,8 +51,8 @@ const AddComponent = () => {
   }
 
   const closeModal = () => {
-    // resultModal 종료
     setResult(null)
+    moveToList({ page: 1 })
   }
 
   return (
