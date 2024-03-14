@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,34 +52,30 @@ public class CustomFileUtil {
    * @return 저장되는 파일의 이름
    * @throws RuntimeException
    */
-  public List<String> saveFiles(List<FilePart> files) throws RuntimeException {
+  public List<String> saveFiles(List<MultipartFile> files) throws RuntimeException {
     if (files == null || files.size() == 0) {
       return List.of(); // 예외 처리를 안하고 그냥 빈 리스트를 반환하네?
     }
 
     List<String> uploadName = new ArrayList();
 
-    for (FilePart file : files) {
-      String saveName = UUID.randomUUID().toString().substring(0, 8) + "_" + file.filename();
+    for (MultipartFile file : files) {
+      String saveName = UUID.randomUUID().toString().substring(0, 8) + "_" + file.getOriginalFilename();
       Path savePath = Paths.get(uploadPath, saveName);
 
-      file.transferTo(savePath).block();
-
-      int idx = file.filename().lastIndexOf(".");
-
-      // 파일의 형태 확인
-      //if (file.headers().getContentType() != null && file.headers().getContentType().toString().startsWith("image")) {
-      if (file.headers().getContentType().toString().startsWith("image")) {
-        Path thumbnailPath = Paths.get(uploadPath, "s_" + saveName);
-        try {
+      try {
+        Files.copy(file.getInputStream(), savePath);
+        String contentType = file.getContentType();
+        if (contentType != null && contentType.startsWith("image")) {
+          Path thumbnailPath = Paths.get(uploadPath, "s_" + saveName);
           Thumbnails.of(savePath.toFile())
                   .size(250, 250)
                   .toFile(thumbnailPath.toFile());
-        } catch (IOException e) {
-          throw new RuntimeException(e);
         }
-
+      } catch (IOException e) {
+        throw new RuntimeException(e);
       }
+
 
       uploadName.add(saveName);
     }

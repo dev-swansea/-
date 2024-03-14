@@ -33,7 +33,7 @@ public class ProductController {
   @PostMapping
   public Map<String, Long> register(ProductDTO productDTO) {
     log.info("register => {}", productDTO);
-    List<FilePart> fileList = productDTO.getFiles();
+    List<MultipartFile> fileList = productDTO.getFiles();
     List<String> uploadFileNames = customFileUtil.saveFiles(fileList);
     productDTO.setUploadFileNames(uploadFileNames);
 
@@ -67,7 +67,7 @@ public class ProductController {
     List<String> originalFileNames = originalProduct.getUploadFileNames();
 
     // 새로 업로드 해야 하는 파일들
-    List<FilePart> files = productDTO.getFiles();
+    List<MultipartFile> files = productDTO.getFiles();
 
     // 새로 업로드되어서 만들어진 파일 이름들
     List<String> updateFileNames = customFileUtil.saveFiles(files);
