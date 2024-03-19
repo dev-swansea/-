@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class RootConfig {
 
   @Bean
-  public ModelMapper getMapper(){
+  public ModelMapper getMapper() {
     ModelMapper modelMapper = new ModelMapper();
     modelMapper.getConfiguration()
             .setFieldMatchingEnabled(true)
@@ -18,4 +18,5 @@ public class RootConfig {
 
     return modelMapper;
   }
+
 }

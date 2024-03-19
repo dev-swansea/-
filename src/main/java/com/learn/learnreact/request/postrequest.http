@@ -1,2 +1,14 @@
 ###
-GET http://localhost:8080/api/products/1112
+GET http://localhost:8080/api/products/12
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJzb2NpYWwiOmZhbHNlLCJwdyI6IiQyYSQxMCRaWmFNOTI4WEZhbzFBcXFtTm9BZDF1UjY2NDhRbm5udy4yMXlWbXF5dU5PQ2YzbTlPUWNmcSIsIm5pY2tuYW1lIjoidXNlcjkiLCJyb2xlTmFtZXMiOlsiVVNFUiIsIk1BTkFHRVIiLCJBRE1JTiJdLCJlbWFpbCI6InN1d2FuOSIsImlhdCI6MTcxMDgzNTU1NCwiZXhwIjoxNzEwOTIxOTU0fQ.nvVtOI3EFTaXIWD16NN-kDsOCHSnvsA3JrZu7yN94ocRDGIXVCxq4_ZFq-EIizos
+
+
+
+
+
+
+
+
+
+
+

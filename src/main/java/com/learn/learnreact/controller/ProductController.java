@@ -10,12 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,7 +30,6 @@ public class ProductController {
 
   @PostMapping
   public Map<String, Long> register(ProductDTO productDTO) {
-    log.info("register => {}", productDTO);
     List<FilePart> fileList = productDTO.getFiles();
     List<String> uploadFileNames = customFileUtil.saveFiles(fileList);
     productDTO.setUploadFileNames(uploadFileNames);
@@ -53,9 +50,10 @@ public class ProductController {
     return productService.getList(pageRequestDTO);
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
   @GetMapping("/{pno}")
-  public ProductDTO read(@PathVariable("pno") Long pno) {
-    return productService.get(pno);
+  public Mono<ProductDTO> read(@PathVariable("pno") Long pno) {
+    return Mono.just(productService.get(pno));
   }
 
   @RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH}, path = ("/{pno}"))

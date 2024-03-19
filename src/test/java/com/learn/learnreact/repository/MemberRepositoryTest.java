@@ -49,5 +49,4 @@ public class MemberRepositoryTest {
     log.info("member => {}", member);
   }
 
-
 }

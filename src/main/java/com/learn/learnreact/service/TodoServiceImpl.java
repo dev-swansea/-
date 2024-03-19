@@ -29,14 +29,12 @@ public class TodoServiceImpl implements TodoService {
 
   @Override
   public Long register(TodoDTO todoDTO) {
-    log.info("....");
     Todo todo = modelMapper.map(todoDTO, Todo.class);
     return todoRepository.save(todo).getTno();
   }
 
   @Override
   public TodoDTO get(Long tno) {
-    log.info("...");
     Todo todo = todoRepository.findById(tno).orElseThrow();
     return modelMapper.map(todo, TodoDTO.class);
   }
