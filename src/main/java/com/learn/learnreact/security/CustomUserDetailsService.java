@@ -5,23 +5,22 @@ import com.learn.learnreact.dto.MemberDTO;
 import com.learn.learnreact.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements ReactiveUserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
   private final MemberRepository memberRepository;
 
   @Override
-  public Mono<UserDetails> findByUsername(String username) {
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     log.info("============findByUsername==============");
     Member member = memberRepository.getWithRoles(username);
     if (member == null) {
@@ -35,8 +34,7 @@ public class CustomUserDetailsService implements ReactiveUserDetailsService {
             member.getMemberRoleList().stream().map(role -> role.name()).collect(Collectors.toList()));
 
     log.info("member dto => {}", memberDTO);
-
-    return Mono.just(memberDTO);
+    return memberDTO;
   }
 
 }

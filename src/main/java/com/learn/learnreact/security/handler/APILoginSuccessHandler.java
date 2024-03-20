@@ -3,22 +3,21 @@ package com.learn.learnreact.security.handler;
 import com.google.gson.Gson;
 import com.learn.learnreact.dto.MemberDTO;
 import com.learn.learnreact.util.JWTUtil;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.server.WebFilterExchange;
-import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
-import org.springframework.web.reactive.function.server.ServerResponse;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 @Slf4j
-public class APILoginSuccessHandler implements ServerAuthenticationSuccessHandler {
+public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
   @Override
-  public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
+  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
     log.info("===========================");
     log.info("Authentication Handler");
     log.info("===========================");
@@ -37,14 +36,12 @@ public class APILoginSuccessHandler implements ServerAuthenticationSuccessHandle
 
     String json = gson.toJson(claims);
 
-    ServerWebExchange exchange = webFilterExchange.getExchange();
-    exchange.getResponse()
-            .getHeaders()
-            .set(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+    response.setContentType("application/json");
 
-    return webFilterExchange.getExchange()
-            .getResponse()
-            .writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(json.getBytes())));
+    PrintWriter pw = response.getWriter();
+    pw.println(json);
+    pw.close();
   }
+
 
 }

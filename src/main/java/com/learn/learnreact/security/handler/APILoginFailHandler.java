@@ -1,35 +1,34 @@
 package com.learn.learnreact.security.handler;
 
 import com.google.gson.Gson;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.server.WebFilterExchange;
-import org.springframework.security.web.server.authentication.ServerAuthenticationFailureHandler;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 @Slf4j
-public class APILoginFailHandler implements ServerAuthenticationFailureHandler {
+public class APILoginFailHandler implements AuthenticationFailureHandler {
 
   @Override
-  public Mono<Void> onAuthenticationFailure(WebFilterExchange webFilterExchange, AuthenticationException exception) {
-
+  public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
     log.info("Login fail => {}", exception);
     System.out.println(exception);
 
     Gson gson = new Gson();
     String json = gson.toJson(Map.of("error", "LOGIN_ERROR"));
 
-    ServerWebExchange exchange = webFilterExchange.getExchange();
-    exchange.getResponse()
-            .getHeaders()
-            .set(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+    response.setContentType("application/json");
 
-    return webFilterExchange.getExchange()
-            .getResponse()
-            .writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(json.getBytes())));
+    PrintWriter pw = response.getWriter();
+    pw.println(json);
+    pw.close();
+
   }
+
 }

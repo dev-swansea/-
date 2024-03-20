@@ -1,7 +1,7 @@
 POST http://localhost:8080/api/member/login
 Content-Type: application/x-www-form-urlencoded
 
-username = suwan9 &
+username = suwan1 &
 password = suwan
 
 ### Send POST request with body as parameters

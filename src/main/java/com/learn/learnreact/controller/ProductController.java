@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +30,7 @@ public class ProductController {
 
   @PostMapping
   public Map<String, Long> register(ProductDTO productDTO) {
-    List<FilePart> fileList = productDTO.getFiles();
+    List<MultipartFile> fileList = productDTO.getFiles();
     List<String> uploadFileNames = customFileUtil.saveFiles(fileList);
     productDTO.setUploadFileNames(uploadFileNames);
 
@@ -50,10 +50,11 @@ public class ProductController {
     return productService.getList(pageRequestDTO);
   }
 
-  @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+  //@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
   @GetMapping("/{pno}")
-  public Mono<ProductDTO> read(@PathVariable("pno") Long pno) {
-    return Mono.just(productService.get(pno));
+  public ProductDTO read(@PathVariable("pno") Long pno) {
+    return productService.get(pno);
   }
 
   @RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH}, path = ("/{pno}"))
@@ -65,7 +66,7 @@ public class ProductController {
     List<String> originalFileNames = originalProduct.getUploadFileNames();
 
     // 새로 업로드 해야 하는 파일들
-    List<FilePart> files = productDTO.getFiles();
+    List<MultipartFile> files = productDTO.getFiles();
 
     // 새로 업로드되어서 만들어진 파일 이름들
     List<String> updateFileNames = customFileUtil.saveFiles(files);
