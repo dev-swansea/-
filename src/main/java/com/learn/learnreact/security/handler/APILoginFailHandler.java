@@ -17,7 +17,7 @@ public class APILoginFailHandler implements AuthenticationFailureHandler {
 
   @Override
   public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-    log.info("Login fail => {}", exception);
+    log.error("Login fail => {}", exception);
     System.out.println(exception);
 
     Gson gson = new Gson();

@@ -14,7 +14,7 @@ public class JWTUtil {
 
   private static String key = "0107196201301071962013010719620130107196201301071962013";
 
-  public static String generateToken(Map<String, Object> valueMap, int min) {
+  public static String generateToken(Map<String, Object> claims, int min) {
     SecretKey key = null;
 
     try {
@@ -25,7 +25,7 @@ public class JWTUtil {
 
     String jwtStr = Jwts.builder()
             .setHeader(Map.of("typ", "JWT"))
-            .setClaims(valueMap)
+            .setClaims(claims)
             .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
             .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(min).toInstant()))
             .signWith(key)

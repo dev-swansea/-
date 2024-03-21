@@ -7,6 +7,7 @@ import com.learn.learnreact.service.ProductService;
 import com.learn.learnreact.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;

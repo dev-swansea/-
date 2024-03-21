@@ -3,6 +3,7 @@ package com.learn.learnreact.config;
 import com.learn.learnreact.security.filter.JWTCheckFilter;
 import com.learn.learnreact.security.handler.APILoginFailHandler;
 import com.learn.learnreact.security.handler.APILoginSuccessHandler;
+import com.learn.learnreact.security.handler.CustomAccessDenieHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +23,7 @@ import java.util.Arrays;
 @Configuration
 @Slf4j
 @RequiredArgsConstructor
-@EnableMethodSecurity
+@EnableMethodSecurity // 메서드별 권한 체크를 위한 애너테이션
 public class CustomSecurityConfig {
 
   @Bean
@@ -41,6 +42,10 @@ public class CustomSecurityConfig {
     });
 
     http.addFilterBefore(new JWTCheckFilter(), UsernamePasswordAuthenticationFilter.class);
+
+    http.exceptionHandling(exception -> {
+      exception.accessDeniedHandler(new CustomAccessDenieHandler());
+    });
 
     return http.build();
   }
