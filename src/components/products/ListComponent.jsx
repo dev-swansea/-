@@ -4,6 +4,7 @@ import { getList } from "../../api/productsApi"
 import FetchingModal from "../common/FetchingModal"
 import { API_SERVER_HOST } from "../../api/todoApi"
 import PageComponent from "../common/PageComponent"
+import useCustomLogin from "../../hooks/useCustomLogin"
 
 const initState = {
   dtoList: [],
@@ -23,14 +24,18 @@ const ListComponent = () => {
   const [serverData, setServerData] = useState(initState)
   const [fetching, setFetching] = useState(false)
 
+  const { exceptionHandler } = useCustomLogin()
+
   const host = API_SERVER_HOST
 
   useEffect(() => {
     setFetching(true)
-    getList({ page, size }).then((data) => {
-      setServerData(data)
-      setFetching(false)
-    })
+    getList({ page, size })
+      .then((data) => {
+        setServerData(data)
+        setFetching(false)
+      })
+      .catch((err) => exceptionHandler(err))
   }, [page, size, refresh])
 
   return (

@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react"
-import useCustomMove from "../../hooks/useCustomMove"
+import { useEffect, useState } from "react"
 import { getOne } from "../../api/productsApi"
-import FetchingModal from "../common/FetchingModal"
 import { API_SERVER_HOST } from "../../api/todoApi"
-import { useParams } from "react-router-dom"
+import useCustomMove from "../../hooks/useCustomMove"
+import FetchingModal from "../common/FetchingModal"
+import useCustomLogin from "../../hooks/useCustomLogin"
 
 const initState = {
   pno: 0,
@@ -18,11 +18,16 @@ const ReadComponent = ({ pno }) => {
   const { moveToList, moveToModify } = useCustomMove()
   const [fetching, setFetching] = useState(false)
 
+  const { exceptionHandler } = useCustomLogin()
+
   const host = API_SERVER_HOST
 
   useEffect(() => {
     setFetching(true)
     getOne(pno).then((data) => {
+      if (data.error) {
+        exceptionHandler(data.error)
+      }
       setProduct(data)
       setFetching(false)
     })

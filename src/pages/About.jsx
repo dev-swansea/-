@@ -1,7 +1,18 @@
-import React from "react";
+import BasicLayout from "../layout/BasicLayout"
+import useCustomLogin from "../hooks/useCustomLogin"
 
 const About = () => {
-  return <div>About</div>;
-};
+  const { isLogin, moveToLoginReturn } = useCustomLogin()
 
-export default About;
+  if (!isLogin) {
+    return moveToLoginReturn()
+  }
+
+  return (
+    <div>
+      <BasicLayout />
+    </div>
+  )
+}
+
+export default About

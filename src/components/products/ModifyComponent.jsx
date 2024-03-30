@@ -83,7 +83,7 @@ const ModifyComponent = ({ pno }) => {
 
   const deleteOldImages = (imageName) => {
     const resultFileNames = product.uploadFileNames.filter(
-      (filename) => filename != imageName
+      (filename) => filename !== imageName
     )
     product.uploadFileNames = resultFileNames
     setProduct({ ...product })
