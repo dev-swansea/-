@@ -16,7 +16,6 @@ public class APIRefreshController {
 
   @RequestMapping("/api/member/refresh")
   public Map<String, Object> refresh(@RequestHeader("Authorization") String authHeader, String refreshToken) {
-    System.out.println(refreshToken);
     if (refreshToken == null) {
       throw new CustomJWTException("NULL_REFRESH");
     }
@@ -39,7 +38,7 @@ public class APIRefreshController {
     String newAccessToken = JWTUtil.generateToken(claims, 10);
     String newRefreshToken = checkTime((Integer) claims.get("exp")) ? JWTUtil.generateToken(claims, 60 * 24) : refreshToken;
 
-    return Map.of("accessToken", newAccessToken, "refreshToken", refreshToken);
+    return Map.of("accessToken", newAccessToken, "refreshToken", newRefreshToken);
   }
 
   // refresh token이 1시간 미만이면
