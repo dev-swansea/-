@@ -112,7 +112,7 @@ public class ProductServiceImpl implements ProductService {
             .build();
 
     List<ProductImage> imageList = product.getImageList();
-    if (imageList.isEmpty() || imageList.size() == 0) { // 둘 중 하나만 있으면 충분하지 않을까?
+    if (imageList.isEmpty() || imageList.size() == 0) {
       return productDTO;
     }
 

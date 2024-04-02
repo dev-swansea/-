@@ -51,8 +51,7 @@ public class ProductController {
     return productService.getList(pageRequestDTO);
   }
 
-  //@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-  @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+  //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
   @GetMapping("/{pno}")
   public ProductDTO read(@PathVariable("pno") Long pno) {
     return productService.get(pno);
@@ -97,7 +96,6 @@ public class ProductController {
     List<String> uploadFileNames = productService.get(pno).getUploadFileNames();
 
     productService.delete(pno);
-
     customFileUtil.deleteFile(uploadFileNames);
 
     return Map.of("RESULT", "SUCCESS");

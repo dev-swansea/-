@@ -28,3 +28,11 @@ Content-Type: application/x-www-form-urlencoded
 id = 999 &
 value = content &
 fact = IntelliJ %+ HTTP Client %= <3
+
+### 카카오 api서버 호출
+GET http://localhost:8080/api/member/kakao?accessToken=872z596OPPrRnzQ6k3UrD0tGdjhF4Yk72JcKPXWcAAABjpS9RnoBl6J2VXah6g
+
+### 카카오 그냥 쌩으로,
+GET https://kapi.kakao.com/v2/user/me
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer C3FN1rVjQJXRFJ1cBHjX7w3-PXw_IIAEDwcKKiURAAABjpUUOc4Bl6J2VXah6g
