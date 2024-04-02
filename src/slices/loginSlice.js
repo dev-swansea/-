@@ -24,15 +24,15 @@ const loginSlice = createSlice({
   name: "LoginSlice",
   initialState: loadMemberCookie() || initState, // 쿠키가 없다면 초기값 사용
   reducers: {
-    /*     login: (state, action) => { // 이건 thunk 이후에 언제 쓰지?
-      console.log("login...")
+    login: (state, action) => {
+      console.log("login...", action)
 
-      // {email, pw로 구성}
-      const data = action.payload
+      // 소셜로그인 회원이 사용
+      const payload = action.payload
+      setCookie("member", JSON.stringify(payload), 1)
 
-      // 새로운 상태
-      return { email: data.email }
-    }, */
+      return payload
+    },
     logout: (state, action) => {
       console.log("logout...")
 

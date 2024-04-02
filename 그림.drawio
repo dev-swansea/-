@@ -1,0 +1,68 @@
+<mxfile host="65bd71144e">
+    <diagram id="JyXUK2qjGH4vlN3dQrM-" name="Page-1">
+        <mxGraphModel dx="1386" dy="531" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="7" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="120" y="69" width="514" height="386" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="199" y="26" width="14" height="472" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="388" y="16" width="14" height="472" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="사용자 인증 앱 설정 확인" style="edgeStyle=none;html=1;startArrow=none;startFill=0;entryX=1.429;entryY=0.591;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=classic;endFill=1;" edge="1" parent="1" source="10" target="10">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="599" y="257"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="10" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="555" y="16" width="14" height="472" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="Step1. 인가 코드 받기" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="233" y="16" width="135" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="GET/oauth/authorize" style="endArrow=classic;html=1;entryX=-0.5;entryY=0.189;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="10">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="404" y="105" as="sourcePoint"/>
+                        <mxPoint x="454" y="55" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="13" value="2. 카카오계정 로그인 요청" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;entryX=-0.5;entryY=0.316;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.294;exitDx=0;exitDy=0;exitPerimeter=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="8" target="10">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="460" y="167" as="sourcePoint"/>
+                        <mxPoint x="497" y="143" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="14" value="3. 카카오계정 로그인" style="endArrow=classic;html=1;exitX=1.214;exitY=0.422;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.071;entryY=0.445;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="8" target="10">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="527" y="285" as="sourcePoint"/>
+                        <mxPoint x="577" y="235" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="15" value="4. 동의 화면 출력" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;entryX=-0.5;entryY=0.316;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.294;exitDx=0;exitDy=0;exitPerimeter=0;startArrow=classic;startFill=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="217" y="310.99800000000005" as="sourcePoint"/>
+                        <mxPoint x="552" y="311.38200000000006" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="16" value="5. 동의하고 계속" style="endArrow=classic;html=1;exitX=1.214;exitY=0.422;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.071;entryY=0.445;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="219.9960000000001" y="371.414" as="sourcePoint"/>
+                        <mxPoint x="558.0060000000001" y="372.27" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="21" value="302 Redirect URI로 &lt;br&gt;인가 코드 전달" style="endArrow=none;dashed=1;html=1;entryX=-0.571;entryY=0.856;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=classic;startFill=1;" edge="1" parent="1" target="10">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="404" y="420" as="sourcePoint"/>
+                        <mxPoint x="454" y="370" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

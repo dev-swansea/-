@@ -37,10 +37,10 @@ const beforeReq = (config) => {
     })
   }
 
-  const { AccessToken } = memberInfo
+  const { accessToken } = memberInfo
 
   // Authorization 헤더 처리
-  config.headers.Authorization = `Bearer ${AccessToken}`
+  config.headers.Authorization = `Bearer ${accessToken}`
 
   console.log("config: ", config)
   return config

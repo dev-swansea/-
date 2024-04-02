@@ -22,8 +22,8 @@ const useCustomLogin = () => {
     navigate({ pathname: path }, { replace: true })
   }
 
-  const moveToLogin = (path) => {
-    navigate({ pathname: path }, { replace: true })
+  const moveToLogin = () => {
+    navigate({ pathname: "/member/login" }, { replace: true })
   }
 
   const moveToLoginReturn = () => {
