@@ -6,7 +6,7 @@ build/
 !**/src/test/**/build/
 
 upload
-
+request/
 ### STS ###
 .apt_generated
 .classpath
