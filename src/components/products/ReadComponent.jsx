@@ -4,6 +4,7 @@ import { API_SERVER_HOST } from "../../api/todoApi"
 import useCustomMove from "../../hooks/useCustomMove"
 import FetchingModal from "../common/FetchingModal"
 import useCustomLogin from "../../hooks/useCustomLogin"
+import useCustomCart from "../../hooks/useCustomCart"
 
 const initState = {
   pno: 0,
@@ -14,13 +15,28 @@ const initState = {
 }
 
 const ReadComponent = ({ pno }) => {
+  const host = API_SERVER_HOST
   const [product, setProduct] = useState(initState)
   const { moveToList, moveToModify } = useCustomMove()
   const [fetching, setFetching] = useState(false)
 
+  const { changeCart, cartItems } = useCustomCart()
+  const { loginState } = useCustomLogin()
+
   const { exceptionHandler } = useCustomLogin()
 
-  const host = API_SERVER_HOST
+  const handleClickAddCart = () => {
+    let qty = 1
+    const addedItem = cartItems.filter((item) => item["pno"] === parseInt(pno))[0]
+
+    if (addedItem) {
+      if (window.confirm("이미 추가된 상품입니다. 추가하시겠습니까?") === false) {
+        return
+      }
+      qty = addedItem.qty + 1
+    }
+    changeCart({ email: loginState.email, pno, qty })
+  }
 
   useEffect(() => {
     setFetching(true)
@@ -40,35 +56,27 @@ const ReadComponent = ({ pno }) => {
       <div className="flex justify-center mt-10">
         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
           <div className="w-1/5 p-6 text-right font-bold">PNO</div>
-          <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">
-            {product.pno}
-          </div>
+          <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">{product.pno}</div>
         </div>
       </div>
 
       <div className="flex justify-center">
         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
           <div className="w-1/5 p-6 text-right font-bold">PNAME</div>
-          <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">
-            {product.pname}
-          </div>
+          <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">{product.pname}</div>
         </div>
       </div>
 
       <div className="flex justify-center">
         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
           <div className="w-1/5 p-6 text-right font-bold">PRICE</div>
-          <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">
-            {product.price}
-          </div>
+          <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">{product.price}</div>
         </div>
       </div>
       <div className="flex justify-center">
         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
           <div className="w-1/5 p-6 text-right font-bold">PDESC</div>
-          <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">
-            {product.pdesc}
-          </div>
+          <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">{product.pdesc}</div>
         </div>
       </div>
 
@@ -93,6 +101,11 @@ const ReadComponent = ({ pno }) => {
           className="inline-block rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
           onClick={() => moveToList()}>
           List
+        </button>
+        <button
+          className="inline-block rounded p-4 m-2 text-xl w-32 text-white bg-green-500"
+          onClick={handleClickAddCart}>
+          Add Cart
         </button>
       </div>
     </div>
