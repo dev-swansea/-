@@ -22,7 +22,6 @@ const ReadComponent = ({ pno }) => {
 
   const handleClickAddCart = () => {
     let qty = 1
-
     const addedItem = cartItems.filter((item) => item.pno === parseInt(pno))[0]
 
     if (addedItem) {
@@ -47,7 +46,6 @@ const ReadComponent = ({ pno }) => {
   }
 
   const product = data || initState
-  console.log("product: ", product)
   return (
     <div className="border-2 border-sky-200 mt-10 m-2 p-4">
       {isFetching ? <FetchingModal /> : <></>}

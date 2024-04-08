@@ -1,21 +1,35 @@
-import { useSelector, useDispatch } from "react-redux"
 import { createSearchParams, Navigate, useNavigate } from "react-router-dom"
-import { loginPostAsync, logout } from "../slices/loginSlice"
+import { useRecoilState, useResetRecoilState } from "recoil"
+import { loginPost } from "../api/memberApi"
+import signinState from "../atom/signinState"
+import { removeCookie, setCookie } from "../util/cookieUtil"
+import { cartState } from "../atom/cartState"
 
 const useCustomLogin = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const [loginState, setLoginState] = useRecoilState(signinState)
+  const resetState = useResetRecoilState(signinState)
 
-  const loginState = useSelector((state) => state.loginSlice) // 로그인 상태
+  const resetCartState = useResetRecoilState(cartState)
+
   const isLogin = loginState.email ? true : false // 로그인 여부
 
   const doLogin = async (loginParam) => {
-    const action = await dispatch(loginPostAsync(loginParam))
-    return action.payload
+    const result = await loginPost(loginParam)
+    console.log("recoil login result: ", result)
+    saveAsCookie(result)
+    return result
+  }
+
+  const saveAsCookie = (data) => {
+    setCookie("member", JSON.stringify(data), 1)
+    setLoginState(data)
   }
 
   const doLogout = () => {
-    dispatch(logout())
+    removeCookie("member")
+    resetState()
+    resetCartState()
   }
 
   const moveToPath = (path) => {
@@ -58,6 +72,7 @@ const useCustomLogin = () => {
     moveToLogin,
     moveToLoginReturn,
     exceptionHandler,
+    saveAsCookie,
   }
 }
 
