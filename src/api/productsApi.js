@@ -10,8 +10,8 @@ export const postAdd = async (product) => {
     },
   }
 
-  // 경로 뒤 '/' 주의
-  return await jwtAxios.post(`${host}`, product, header)
+  const res = await jwtAxios.post(`${host}`, product, header)
+  return res.data
 }
 
 export const getList = async (pageParam) => {

@@ -12,10 +12,7 @@ const refreshJWT = async (accessToken, refreshToken) => {
     },
   }
 
-  const res = await axios.get(
-    `${host}/api/member/refresh?refreshToken=${refreshToken}`,
-    header
-  )
+  const res = await axios.get(`${host}/api/member/refresh?refreshToken=${refreshToken}`, header)
 
   console.log("---------------------")
   console.log("res.data: ", res.data)
@@ -59,10 +56,7 @@ const beforeRes = async (res) => {
   if (data && data.error === "ERROR_ACCESS_TOKEN") {
     const memberCookieValue = getCookie("member")
 
-    const result = await refreshJWT(
-      memberCookieValue.accessToken,
-      memberCookieValue.refreshToken
-    )
+    const result = await refreshJWT(memberCookieValue.accessToken, memberCookieValue.refreshToken)
     console.log("refresh JWT result => ", result)
 
     memberCookieValue.accessToken = result.accessToken

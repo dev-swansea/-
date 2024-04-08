@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
-import useCustomMove from "../../hooks/useCustomMove"
-import { getList } from "../../api/productsApi"
-import FetchingModal from "../common/FetchingModal"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { API_SERVER_HOST } from "../../api/todoApi"
-import PageComponent from "../common/PageComponent"
+import { getList } from "../../api/productsApi"
 import useCustomLogin from "../../hooks/useCustomLogin"
+import useCustomMove from "../../hooks/useCustomMove"
+import FetchingModal from "../common/FetchingModal"
+import PageComponent from "../common/PageComponent"
 
 const initState = {
   dtoList: [],
@@ -19,28 +19,32 @@ const initState = {
   current: 0,
 }
 
+const host = API_SERVER_HOST
+
 const ListComponent = () => {
   const { page, size, refresh, moveToList, moveToRead } = useCustomMove()
-  const [serverData, setServerData] = useState(initState)
-  const [fetching, setFetching] = useState(false)
+  const { moveToLoginReturn } = useCustomLogin()
 
-  const { exceptionHandler } = useCustomLogin()
+  const { isFetching, data, error, isError } = useQuery({
+    queryKey: ["products/list", { page, size, refresh }],
+    queryFn: () => getList({ page, size }),
+    staleTime: 1000 * 60 * 5,
+  })
 
-  const host = API_SERVER_HOST
+  const handleClickPage = (pageParam) => {
+    moveToList(pageParam)
+  }
 
-  useEffect(() => {
-    setFetching(true)
-    getList({ page, size })
-      .then((data) => {
-        setServerData(data)
-        setFetching(false)
-      })
-      .catch((err) => exceptionHandler(err))
-  }, [page, size, refresh])
+  if (isError) {
+    console.log(error)
+    return moveToLoginReturn()
+  }
+
+  const serverData = data || initState
 
   return (
     <div className="border-2 border-blue-100 mt-10 mx-2">
-      {fetching ? <FetchingModal /> : <></>}
+      {isFetching ? <FetchingModal /> : <></>}
       <div className="flex flex-wrap mx-auto p-6">
         {serverData.dtoList.map((product) => (
           <div
@@ -67,9 +71,7 @@ const ListComponent = () => {
         ))}
       </div>
 
-      <PageComponent
-        serverData={serverData}
-        movePage={moveToList}></PageComponent>
+      <PageComponent serverData={serverData} movePage={handleClickPage}></PageComponent>
     </div>
   )
 }

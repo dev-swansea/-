@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from "react"
-import { getOne, putOne, deleteOne } from "../../api/productsApi"
-import FetchingModal from "../common/FetchingModal"
-import ResultModal from "../common/ResultModal"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useEffect, useRef, useState } from "react"
+import { deleteOne, getOne, putOne } from "../../api/productsApi"
 import { API_SERVER_HOST } from "../../api/todoApi"
 import useCustomMove from "../../hooks/useCustomMove"
+import FetchingModal from "../../components/common/FetchingModal"
+import ResultModal from "../../components/common/ResultModal"
 
 const initState = {
   pno: 0,
@@ -14,37 +15,41 @@ const initState = {
   uploadFileNames: [],
 }
 
+const host = API_SERVER_HOST
 const ModifyComponent = ({ pno }) => {
   const [product, setProduct] = useState(initState)
-  const [fetching, setFetching] = useState(false)
-  const [result, setResult] = useState(null)
-
   const { moveToRead, moveToList } = useCustomMove()
-
   const uploadRef = useRef()
+  console.log("product: ", product)
 
-  const host = API_SERVER_HOST
+  const delMutation = useMutation({
+    mutationFn: (pno) => deleteOne(pno),
+  })
+  const modMutaion = useMutation({
+    mutationFn: (product) => putOne(pno, product),
+  })
+
+  const queryClient = useQueryClient()
+
+  const query = useQuery({
+    queryKey: ["products", pno],
+    queryFn: () => getOne(pno),
+    staleTime: Infinity,
+  })
 
   useEffect(() => {
-    setFetching(true)
-
-    getOne(pno).then((data) => {
-      setProduct(data)
-      setFetching(false)
-    })
-  }, [pno])
+    if (query.isSuccess) {
+      setProduct(query.data)
+    }
+  }, [pno, query.data, query.isSuccess])
 
   const handleChangeProduct = (e) => {
-    // product[e.target.name] = e.target.value
     setProduct({ ...product, [e.target.name]: e.target.value })
   }
 
   const handleClickDelete = () => {
-    setFetching(true)
-    deleteOne(pno).then(() => {
-      setResult("Deleted")
-      setFetching(false)
-    })
+    delMutation.mutate(pno)
+    console.log("delMutation: ", delMutation)
   }
 
   const handleClickModify = () => {
@@ -65,37 +70,44 @@ const ModifyComponent = ({ pno }) => {
       formData.append("uploadFileNames", product.uploadFileNames[i])
     }
 
-    setFetching(true)
-    putOne(pno, formData).then((data) => {
-      setResult("Modified")
-      setFetching(false)
-    })
+    for (const [key, value] of formData) {
+      console.log(key, value)
+    }
+    console.log(product)
+    modMutaion.mutate(formData)
   }
 
   const closeModal = () => {
-    if (result === "Modified") {
-      moveToRead(pno)
-    } else if (result === "Deleted") {
-      moveToList({ page: 1 })
+    if (delMutation.isSuccess) {
+      queryClient.invalidateQueries(["products", pno])
+      queryClient.invalidateQueries(["products/list"])
+      moveToList()
+      return
     }
-    setResult(null)
+
+    if (modMutaion.isSuccess) {
+      queryClient.invalidateQueries(["products", pno])
+      queryClient.invalidateQueries(["products/list"])
+      moveToRead(pno)
+    }
   }
 
   const deleteOldImages = (imageName) => {
-    const resultFileNames = product.uploadFileNames.filter(
-      (filename) => filename !== imageName
-    )
+    const resultFileNames = product.uploadFileNames.filter((filename) => filename !== imageName)
     product.uploadFileNames = resultFileNames
     setProduct({ ...product })
   }
 
   return (
     <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-      {fetching ? <FetchingModal /> : <></>}
-
-      {result ? (
+      {query.isFetching || delMutation.isPending || modMutaion.isPending ? (
+        <FetchingModal />
+      ) : (
+        <></>
+      )}
+      {delMutation.isSuccess || modMutaion.isSuccess ? (
         <ResultModal
-          title={`${result}`}
+          title={`${query.data.pno}번`}
           content={"정상적으로 처리되었습니다."}
           callbackFn={closeModal}
         />
@@ -174,19 +186,14 @@ const ModifyComponent = ({ pno }) => {
           <div className="w-1/5 p-6 text-right font-bold">Images</div>
           <div className="w-4/5 justify-center flex flex-wrap items-start">
             {product.uploadFileNames.map((imgFile, i) => (
-              <div
-                className="flex justify-center flex-col w-1/3 m-1 align-baseline"
-                key={i}>
+              <div className="flex justify-center flex-col w-1/3 m-1 align-baseline" key={i}>
                 <button
                   className="bg-blue-500 text-3xl text-white"
-                  onClick={() => deleteOne(imgFile)}>
+                  onClick={() => deleteOldImages(imgFile)}>
                   DELETE
                 </button>
 
-                <img
-                  src={`${host}/api/products/view/s_${imgFile}`}
-                  alt="기존이미지"
-                />
+                <img src={`${host}/api/products/view/s_${imgFile}`} alt="기존이미지" />
               </div>
             ))}
           </div>
