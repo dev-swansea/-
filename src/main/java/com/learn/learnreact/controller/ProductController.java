@@ -51,7 +51,6 @@ public class ProductController {
     return productService.getList(pageRequestDTO);
   }
 
-  //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
   @GetMapping("/{pno}")
   public ProductDTO read(@PathVariable("pno") Long pno) {
     return productService.get(pno);
@@ -62,8 +61,9 @@ public class ProductController {
     productDTO.setPno(pno);
     ProductDTO originalProduct = productService.get(pno);
 
-    // 기존의 파일들(db에 존재하는 파일들 - 수정 과정에서 삭제되었을 수 있음) ??
+    // 기존의 파일들(db에 존재하는 파일들 - 수정 과정에서 삭제되었을 수 있음)
     List<String> originalFileNames = originalProduct.getUploadFileNames();
+    System.out.println("originalFileNames => " + originalFileNames);
 
     // 새로 업로드 해야 하는 파일들
     List<MultipartFile> files = productDTO.getFiles();
@@ -77,12 +77,13 @@ public class ProductController {
     // 유지되는 파일들 + 새로 업로드된 파일 이름들이 저장해야 하는 파일 목록이 된다.
     if (!updateFileNames.isEmpty()) uploadFileNames.addAll(updateFileNames);
 
-    // 수정 작업
+    // 수정 작업 => 이미지 수정과 post 수정은 다르게 진행
     productService.modify(productDTO);
+
     if (!originalFileNames.isEmpty()) {
       // 지워야 하는 파일 목록 찾기 => filter 사용
       // 예전 파일들 중에서 지워져야 하는 파일이름들, filter로 새로 업로드되는 파일 이름이 기존의 파일 이름에 존재하지 않는 것들을 가져와 리스트로 만든다.
-      List<String> removeFiles = originalFileNames.stream().filter(fileName -> updateFileNames.indexOf(fileName) == -1).collect(Collectors.toList());
+      List<String> removeFiles = originalFileNames.stream().filter(fileName -> updateFileNames.contains(fileName)).collect(Collectors.toList());
 
       // 실제 파일 삭제
       customFileUtil.deleteFile(removeFiles);

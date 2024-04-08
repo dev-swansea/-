@@ -17,7 +17,9 @@ import java.util.Map;
 @Slf4j
 public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
   @Override
-  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+  public void onAuthenticationSuccess(HttpServletRequest request,
+                                      HttpServletResponse response,
+                                      Authentication authentication) throws IOException, ServletException {
     log.info("===========================");
     log.info("Authentication Handler");
     log.info("===========================");
@@ -27,7 +29,7 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
     Map<String, Object> claims = memberDTO.getClaims();
 
     //String accessToken = JWTUtil.generateToken(claims, 1);
-    String accessToken = JWTUtil.generateToken(claims, 60 * 24);
+    String accessToken = JWTUtil.generateToken(claims, 10);
     String refreshToken = JWTUtil.generateToken(claims, 60 * 24);
 
     claims.put("accessToken", accessToken);

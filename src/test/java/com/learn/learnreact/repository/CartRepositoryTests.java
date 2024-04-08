@@ -34,7 +34,7 @@ public class CartRepositoryTests {
 
     // 사용자가 전송하는 정보
     String email = "suwan1";
-    Long pno = 3L;
+    Long pno = 27L;
     int qty = 2;
 
     // 만일 기존에 사용자의 장바구니 아이템이 있었다면

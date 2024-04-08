@@ -40,9 +40,7 @@ public class SocialController {
 
   @RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH}, path = "/api/member/modify")
   public Map<String, String> modify(@RequestBody MemberModifyDTO memberModifyDTO) {
-    log.info("memberModifyDTO => {}", memberModifyDTO);
     memberService.modifyMember(memberModifyDTO);
     return Map.of("result: ", "modified");
   }
-
 }

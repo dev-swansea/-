@@ -17,6 +17,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
             left join p.imageList pi
             where
             mc.owner.email = :email and pi.ord = 0
+            and p.delFlag = false
             order by ci desc
           """)
   public List<CartItemListDTO> getItemsOfCartDTOByEmail(@Param("email") String email);
@@ -44,6 +45,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
             left join p.imageList pi
             where 
             mc.cno = :cno and pi.ord =0
+            and p.delFlag = false
             order by ci desc
           """)
   public List<CartItemListDTO> getItemsOfCartDTOByCart(@Param("cno") Long cno);
